@@ -16,21 +16,11 @@ class ViewController: UIViewController {
     var backgroundAudioPlayer: AVAudioPlayer?
     var transformationAudioPlayer: AVAudioPlayer?
     
-    var right: UIImage?
-    var left: UIImage?
-    var front: UIImage?
-    var up: UIImage?
-    var down: UIImage?
-    var transform: UIImage?
-    var normal: UIImage?
-    var punch: UIImage?
-    var punch2: UIImage?
-    var punch3: UIImage?
-    var superpunch: UIImage?
-    var supergokufront: UIImage?
-    
-    let punchImages = [UIImage(named: "strike1"), UIImage(named: "strike2"), UIImage(named: "strike3")]
-    let superPunchImages = [UIImage(named: "superstrike1"), UIImage(named: "superstrike2"), UIImage(named: "superstrike3")]
+    var moveImages = [UIImage(named: "gokufront"), UIImage(named: "gokuwalk1"), UIImage(named: "gokuwalk2"), UIImage(named: "gokuup"), UIImage(named: "gokudown")]
+    var punchImages = [UIImage(named: "strike1"), UIImage(named: "strike2"), UIImage(named: "strike3")]
+    var superMoveImages = [UIImage(named: "supergokufront"), UIImage(named: "supergokuwalk1"), UIImage(named: "supergokuwalk2"), UIImage(named: "supergokuup"), UIImage(named: "supergokudown")]
+    var superPunchImages = [UIImage(named: "superstrike1"), UIImage(named: "superstrike2"), UIImage(named: "superstrike3")]
+    var transformImagens = [UIImage(named: "transform1"), UIImage(named: "reverttransform")]
     
     var positionX: CGFloat = 0.0
     var positionY: CGFloat = 0.0
@@ -44,22 +34,6 @@ class ViewController: UIViewController {
         backGroundImageView.image = backGroundImage
         backGroundImageView.contentMode = .scaleAspectFill
         
-        right = UIImage(named: "gokuwalk1")
-        left = UIImage(named: "gokuwalk2")
-        front = UIImage(named: "gokufront")
-        up = UIImage(named: "gokuup")
-        down = UIImage(named: "gokudown")
-        transform = UIImage(named: "transform1")
-        normal = UIImage(named: "reverttransform")
-        punch = UIImage(named: "strike1")
-        punch2 = UIImage(named: "strike2")
-        punch3 = UIImage(named: "strike3")
-        superpunch = UIImage(named: "superstrike1")
-        supergokufront = UIImage(named: "supergokufront")
-    
-        
-        
-        
         let characterImage = UIImage(named: "gokufront")
         characterImageView.image = characterImage
         positionX = characterImageView.frame.origin.x
@@ -68,13 +42,12 @@ class ViewController: UIViewController {
         playBackgroundMusic()
     }
     
-    
     @IBAction func punchButtonPressed(_ sender: UIButton) {
-        soundPunchPressed()
+        playActionSound(soundFileName: "superstrike")
         characterImageView.image = punchImages[currentIndex]
         currentIndex += 1
         if currentIndex >= punchImages.count {
-             currentIndex = 0
+            currentIndex = 0
         }
         if isTransformed == false {
             perform(#selector(changeImage), with: nil, afterDelay: 0.2)
@@ -82,68 +55,96 @@ class ViewController: UIViewController {
     }
     
     @IBAction func punchButtonPressedInSuperMode(_ sender: UIButton) {
-        soundSuperPunchPressed()
+        playActionSound(soundFileName: "strike")
         if isTransformed == true {
-        superPunchChanges()
+            superPunchChanges()
         }
     }
     
     @IBAction func normalButtonPressed(_ sender: UIButton) {
-        characterImageView.image = normal
-        isTransformed = false
-        backToNormal()
-        playReturnTransformation()
-        
+        if isTransformed {
+            characterImageView.image = transformImagens[1]
+            isTransformed = false
+            playActionSound(soundFileName: "reverttransform")
+        }
     }
     
     @IBAction func transform1ButtonPressed(_ sender: UIButton) {
-        isTransformed = true
-        transformSsj()
-        characterImageView.image = transform
-        playTransformationSound()
-        
+        if isTransformed == false {
+            characterImageView.image = transformImagens[0]
+            isTransformed = true
+            playActionSound(soundFileName: "somssj")
+        }
     }
     
     @IBAction func leftButtonPressed(_ sender: UIButton) {
-        soundLeftWalk()
-        characterImageView.image = left
-        perform(#selector(changeImage), with: nil, afterDelay: 0.2)
-        positionX -= 50
-        moveCharacter()
+        playActionSound(soundFileName: "leftwalk")
+        if isTransformed == true {
+            characterImageView.image = superMoveImages[2]
+            perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.2)
+            positionX -= 70
+            moveCharacter()
+        } else {
+            characterImageView.image = moveImages[2]
+            perform(#selector(changeImage), with: nil, afterDelay: 0.2)
+            positionX -= 35
+            moveCharacter()
+        }
     }
     
     @IBAction func rightButtonPressed(_ sender: UIButton) {
-        soundRightWalk()
-        characterImageView.image = right
-        perform(#selector(changeImage), with: nil, afterDelay: 0.2)
-        positionX += 50
-        moveCharacter()
+        playActionSound(soundFileName: "rightwalk")
+        if isTransformed == true {
+            characterImageView.image = superMoveImages[1]
+            perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.2)
+            positionX += 70
+            moveCharacter()
+        } else {
+            characterImageView.image = moveImages[1]
+            perform(#selector(changeImage), with: nil, afterDelay: 0.2)
+            positionX += 35
+            moveCharacter()
+        }
     }
     
     @IBAction func upButtonPressed(_ sender: UIButton) {
-        characterImageView.image = up
-        perform(#selector(changeImage), with: nil, afterDelay: 0.2)
-        positionY -= 50
-        moveCharacter()
+        if isTransformed == true {
+            characterImageView.image = superMoveImages[3]
+            perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.2)
+            positionY -= 70
+            moveCharacter()
+        } else {
+            characterImageView.image = moveImages[3]
+            perform(#selector(changeImage), with: nil, afterDelay: 0.2)
+            positionY -= 35
+            moveCharacter()
+        }
     }
     
     @IBAction func downButtonPressed(_ sender: UIButton) {
-        characterImageView.image = down
-        perform(#selector(changeImage), with: nil, afterDelay: 0.2)
-        positionY += 50
-        moveCharacter()
+        if isTransformed == true {
+            characterImageView.image = superMoveImages[4]
+            perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.2)
+            positionY += 70
+            moveCharacter()
+        } else {
+            characterImageView.image = moveImages[4]
+            perform(#selector(changeImage), with: nil, afterDelay: 0.2)
+            positionY += 35
+            moveCharacter()
+        }
     }
     
     @objc func changeImage() {
-        characterImageView.image = front
+        characterImageView.image = moveImages[0]
     }
     
     @objc func changeImageSuperMode() {
-        characterImageView.image = supergokufront
+        characterImageView.image = superMoveImages[0]
     }
     
     @objc func changeImageInPunchSuperMode() {
-        characterImageView.image = superpunch
+        characterImageView.image = superPunchImages[0]
     }
     
     @objc func superPunchChanges() {
@@ -154,7 +155,6 @@ class ViewController: UIViewController {
         }
         perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.2)
     }
-    
     
     func moveCharacter() {
         let maxXPosition = view.bounds.width - characterImageView.bounds.width
@@ -167,22 +167,6 @@ class ViewController: UIViewController {
             self.characterImageView.frame.origin.x = self.positionX
             self.characterImageView.frame.origin.y = self.positionY
         }
-    }
-    
-    func transformSsj() {
-        front = UIImage(named: "supergokufront")
-        right = UIImage(named: "supergokuwalk1")
-        left = UIImage(named: "supergokuwalk2")
-        up = UIImage(named: "supergokuup")
-        down = UIImage(named: "supergokudown")
-    }
-    
-    func backToNormal() {
-        right = UIImage(named: "gokuwalk1")
-        left = UIImage(named: "gokuwalk2")
-        front = UIImage(named: "gokufront")
-        up = UIImage(named: "gokuup")
-        down = UIImage(named: "gokudown")
     }
     
     func playBackgroundMusic() {
@@ -201,9 +185,9 @@ class ViewController: UIViewController {
         }
     }
     
-    func playTransformationSound() {
-        guard let soundURL = Bundle.main.url(forResource: "somssj", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
+    func playActionSound(soundFileName: String) {
+        guard let soundURL = Bundle.main.url(forResource: soundFileName, withExtension: "wav") else {
+            print("Arquivo de som não encontrado: \(soundFileName)")
             return
         }
         
@@ -212,78 +196,10 @@ class ViewController: UIViewController {
             transformationAudioPlayer?.play()
         } catch {
             print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
-        }
-    }
-    
-    func playReturnTransformation() {
-        guard let soundURL = Bundle.main.url(forResource: "reverttransform", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
-            return
-        }
         
-        do {
-            transformationAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            transformationAudioPlayer?.play()
-        } catch {
-            print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
-        }
-    }
-    func soundPunchPressed() {
-        guard let soundURL = Bundle.main.url(forResource: "strike", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
-            return
-        }
-        
-        do {
-            transformationAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            transformationAudioPlayer?.play()
-        } catch {
-            print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
-        }
-    }
-    func soundSuperPunchPressed() {
-        guard let soundURL = Bundle.main.url(forResource: "superstrike", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
-            return
-        }
-        
-        do {
-            transformationAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            transformationAudioPlayer?.play()
-        } catch {
-            print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
-        }
-    }
-    func soundRightWalk() {
-        guard let soundURL = Bundle.main.url(forResource: "rightwalk", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
-            return
-        }
-        
-        do {
-            transformationAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            transformationAudioPlayer?.play()
-        } catch {
-            print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
-        }
-    }
-    func soundLeftWalk() {
-        guard let soundURL = Bundle.main.url(forResource: "leftwalk", withExtension: "wav" ) else {
-            print("Arquivo de som da transformação não encontrado.")
-            return
-        }
-        
-        do {
-            transformationAudioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            transformationAudioPlayer?.play()
-        } catch {
-            print("Erro ao reproduzir o som da transformação: \(error.localizedDescription)")
         }
     }
 }
-
-
-
 
 
 
