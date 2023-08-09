@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5979A0662A7DD37E001D1250 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5979A0652A7DD37E001D1250 /* StateMachine.swift */; };
+		5979A0682A7DE8B2001D1250 /* teleport.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5979A0672A7DE8B2001D1250 /* teleport.wav */; };
+		5979A06A2A7DE8BB001D1250 /* grandebola.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5979A0692A7DE8BB001D1250 /* grandebola.wav */; };
+		5979A06C2A7DE8C3001D1250 /* gokuup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5979A06B2A7DE8C3001D1250 /* gokuup.wav */; };
+		5979A06E2A7DE8CB001D1250 /* bola.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5979A06D2A7DE8CB001D1250 /* bola.wav */; };
 		597B19F12A785A46002EF4C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597B19F02A785A46002EF4C7 /* AppDelegate.swift */; };
 		597B19F32A785A46002EF4C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597B19F22A785A46002EF4C7 /* SceneDelegate.swift */; };
 		597B19F52A785A46002EF4C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597B19F42A785A46002EF4C7 /* ViewController.swift */; };
@@ -23,6 +28,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5979A0652A7DD37E001D1250 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
+		5979A0672A7DE8B2001D1250 /* teleport.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = teleport.wav; sourceTree = "<group>"; };
+		5979A0692A7DE8BB001D1250 /* grandebola.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = grandebola.wav; sourceTree = "<group>"; };
+		5979A06B2A7DE8C3001D1250 /* gokuup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gokuup.wav; sourceTree = "<group>"; };
+		5979A06D2A7DE8CB001D1250 /* bola.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bola.wav; sourceTree = "<group>"; };
 		597B19ED2A785A46002EF4C7 /* firstgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = firstgame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		597B19F02A785A46002EF4C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		597B19F22A785A46002EF4C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +88,7 @@
 				597B19FB2A785A49002EF4C7 /* LaunchScreen.storyboard */,
 				597B19FE2A785A49002EF4C7 /* Info.plist */,
 				59A22CE72A7B18EF00F72061 /* Sounds */,
+				5979A0652A7DD37E001D1250 /* StateMachine.swift */,
 			);
 			path = firstgame;
 			sourceTree = "<group>";
@@ -92,6 +103,10 @@
 				599516AB2A7C920B00E8F6FD /* superstrike.wav */,
 				599516AE2A7C923300E8F6FD /* leftwalk.wav */,
 				599516AD2A7C923300E8F6FD /* rightwalk.wav */,
+				5979A0672A7DE8B2001D1250 /* teleport.wav */,
+				5979A0692A7DE8BB001D1250 /* grandebola.wav */,
+				5979A06B2A7DE8C3001D1250 /* gokuup.wav */,
+				5979A06D2A7DE8CB001D1250 /* bola.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -155,9 +170,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				59B97DE22A7B33BD0008A33B /* somssj.wav in Resources */,
+				5979A0682A7DE8B2001D1250 /* teleport.wav in Resources */,
 				59B97DE42A7B33C40008A33B /* reverttransform.wav in Resources */,
 				599516B02A7C923300E8F6FD /* leftwalk.wav in Resources */,
 				599516AF2A7C923300E8F6FD /* rightwalk.wav in Resources */,
+				5979A06C2A7DE8C3001D1250 /* gokuup.wav in Resources */,
+				5979A06E2A7DE8CB001D1250 /* bola.wav in Resources */,
+				5979A06A2A7DE8BB001D1250 /* grandebola.wav in Resources */,
 				597B19FD2A785A49002EF4C7 /* LaunchScreen.storyboard in Resources */,
 				597B19FA2A785A49002EF4C7 /* Assets.xcassets in Resources */,
 				599516AC2A7C920B00E8F6FD /* superstrike.wav in Resources */,
@@ -177,6 +196,7 @@
 				597B19F52A785A46002EF4C7 /* ViewController.swift in Sources */,
 				597B19F12A785A46002EF4C7 /* AppDelegate.swift in Sources */,
 				597B19F32A785A46002EF4C7 /* SceneDelegate.swift in Sources */,
+				5979A0662A7DD37E001D1250 /* StateMachine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
