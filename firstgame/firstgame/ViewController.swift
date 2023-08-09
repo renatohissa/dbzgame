@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     var skillsImages = [UIImage(named: "bola"), UIImage(named: "grandebola"), UIImage(named: "ballcoming"), UIImage(named: "teleport1"), UIImage(named: "teleport2"), UIImage(named: "gokuminiballatk"), UIImage(named: "miniballatk"), UIImage(named: "supergokuminiballatk")]
     var collisionsImages = [UIImage(named: "buucollision2"), UIImage(named: "buucollision3"), UIImage(named: "buucollision")]
     var villainImages = [UIImage(named: "buufront"), UIImage(named: "buuwalk1"), UIImage(named: "buuwalk2")]
+    var recoveryVilain = [UIImage(named: "buugordorec")]
     
     var positionX: CGFloat = 0.0
     var positionY: CGFloat = 0.0
@@ -28,6 +29,9 @@ class ViewController: UIViewController {
     var isButtonActionInProgress = false
     var currentIndex = 0
     var isPressed = 0
+    var villainHealth: Int = 50
+    var isVillainInRecovery: Bool = false
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +50,12 @@ class ViewController: UIViewController {
         positionX = vilainCharacterImageView.frame.origin.x
         positionY = vilainCharacterImageView.frame.origin.y
         
+        
         characterImageView.layer.zPosition = vilainCharacterImageView.layer.zPosition + 1
+        
+        characterLifeBar.progress = 1.0
+        characterLifeBar.progressTintColor = .green
+
         
         playBackgroundMusic()
         
@@ -460,19 +469,45 @@ class ViewController: UIViewController {
     }
     
     func checkCollisions() {
-        
-        let characterHitbox = CGRect(x: characterImageView.frame.origin.x, y: characterImageView.frame.origin.y, width: characterImageView.frame.width, height: characterImageView.frame.height)
-        let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
-        if characterHitbox.intersects(buuFrontHitbox) {
-            vilainCharacterImageView.image = collisionsImages[currentIndex]
-            currentIndex += 1
-            vilainCharacterImageView.contentMode = .scaleToFill
-            perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
-            if currentIndex >= collisionsImages.count {
+            if isVillainInRecovery {
+                return
+            }
+            
+            let characterHitbox = CGRect(x: characterImageView.frame.origin.x, y: characterImageView.frame.origin.y, width: characterImageView.frame.width, height: characterImageView.frame.height)
+            let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
+            
+            if characterHitbox.intersects(buuFrontHitbox) {
+                villainHealth -= 5
+                characterLifeBar.progress = Float(villainHealth) / 50.0
+                if villainHealth <= 0 {
+                    villainHealth = 50
+                    isVillainInRecovery = true
+                    vilainCharacterImageView.image = recoveryVilain[0]
+                    vilainCharacterImageView.contentMode = .scaleAspectFill
+                    characterLifeBar.setProgress(1.0, animated: true) // Definir barra de vida para 100%
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.isVillainInRecovery = false
+                        self.vilainCharacterImageView.image = self.villainImages[0]
+                    }
+                } else {
+                    if currentIndex < collisionsImages.count {
+                        vilainCharacterImageView.image = collisionsImages[currentIndex]
+                        currentIndex += 1
+                        vilainCharacterImageView.contentMode = .scaleToFill
+                        perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
+                    }
+                }
+                
+                if currentIndex >= collisionsImages.count {
+                    currentIndex = 0 // Reiniciar o índice
+                }
+            } else {
+                vilainCharacterImageView.image = villainImages[0] // Imagem padrão do vilão
                 currentIndex = 0
             }
         }
-    }
+
     func checkSkillsCollision() {
         
         let miniballHitbox = CGRect(x: miniBall.frame.origin.x, y: miniBall.frame.origin.y, width: miniBall.frame.width, height: miniBall.frame.height)

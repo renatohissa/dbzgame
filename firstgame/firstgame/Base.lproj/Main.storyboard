@@ -140,6 +140,7 @@
                     <connections>
                         <outlet property="backGroundImageView" destination="Z7I-4b-vGZ" id="bnt-hb-6kg"/>
                         <outlet property="characterImageView" destination="0XL-zT-wB1" id="WUH-2d-unL"/>
+                        <outlet property="characterLifeBar" destination="12o-a5-3K3" id="hrT-JQ-EFI"/>
                         <outlet property="miniBall" destination="mbA-6G-wr0" id="hhM-J6-B1v"/>
                         <outlet property="vilainCharacterImageView" destination="HTP-cY-m3B" id="Mcq-2J-UZ6"/>
                     </connections>
