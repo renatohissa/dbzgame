@@ -104,12 +104,6 @@
                                 <rect key="frame" x="94" y="769" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <progressView opaque="NO" contentMode="scaleAspectFit" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" progressImage="barradehp" translatesAutoresizingMaskIntoConstraints="NO" id="dYl-Sd-yu5">
-                                <rect key="frame" x="6" y="725" width="72" height="4"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="progressTintColor" systemColor="systemGreenColor"/>
-                                <color key="trackTintColor" red="0.5568627451" green="0.16078431369999999" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </progressView>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPe-12-Gjw">
                                 <rect key="frame" x="84" y="125" width="150" height="4"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -146,7 +140,6 @@
                     <connections>
                         <outlet property="backGroundImageView" destination="Z7I-4b-vGZ" id="bnt-hb-6kg"/>
                         <outlet property="characterImageView" destination="0XL-zT-wB1" id="WUH-2d-unL"/>
-                        <outlet property="characterLifeBar" destination="dYl-Sd-yu5" id="tt7-xk-lbr"/>
                         <outlet property="miniBall" destination="mbA-6G-wr0" id="hhM-J6-B1v"/>
                         <outlet property="vilainCharacterImageView" destination="HTP-cY-m3B" id="Mcq-2J-UZ6"/>
                     </connections>

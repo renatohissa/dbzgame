@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     var punchImages = [UIImage(named: "strike1"), UIImage(named: "strike2"), UIImage(named: "strike3")]
     var superMoveImages = [UIImage(named: "supergokufront"), UIImage(named: "supergokuwalk1"), UIImage(named: "supergokuwalk2"), UIImage(named: "supergokuup"), UIImage(named: "supergokudown")]
     var superPunchImages = [UIImage(named: "superstrike1"), UIImage(named: "superstrike2"), UIImage(named: "superstrike3")]
-    var transformImages = [UIImage(named: "transform1"), UIImage(named: "reverttransform")]
+    var transformImages = [UIImage(named: "transform1"), UIImage(named: "transform2"), UIImage(named: "transform3"), UIImage(named: "transform4"), UIImage(named: "transform5"), UIImage(named: "reverttransform")]
     var skillsImages = [UIImage(named: "bola"), UIImage(named: "grandebola"), UIImage(named: "ballcoming"), UIImage(named: "teleport1"), UIImage(named: "teleport2"), UIImage(named: "gokuminiballatk"), UIImage(named: "miniballatk"), UIImage(named: "supergokuminiballatk")]
     var collisionsImages = [UIImage(named: "buucollision2"), UIImage(named: "buucollision3"), UIImage(named: "buucollision")]
     var villainImages = [UIImage(named: "buufront"), UIImage(named: "buuwalk1"), UIImage(named: "buuwalk2")]
@@ -45,6 +45,8 @@ class ViewController: UIViewController {
         vilainCharacterImageView.image = vilainImage
         positionX = vilainCharacterImageView.frame.origin.x
         positionY = vilainCharacterImageView.frame.origin.y
+        
+        characterImageView.layer.zPosition = vilainCharacterImageView.layer.zPosition + 1
         
         playBackgroundMusic()
         
@@ -82,7 +84,7 @@ class ViewController: UIViewController {
             DashFrontMove()
             moveCharacter()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             sender.isEnabled = true
         }
         isPressed = 0
@@ -105,7 +107,7 @@ class ViewController: UIViewController {
             DashBackMove()
             moveCharacter()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             sender.isEnabled = true
         }
         isPressed = 0
@@ -130,8 +132,12 @@ class ViewController: UIViewController {
             let miniBallX = characterImageView.frame.maxX + 10
             let miniBallY = characterImageView.frame.midY - miniBall.bounds.height / 2
             miniBall.frame.origin = CGPoint(x: miniBallX, y: miniBallY)
-            miniBall.image = skillsImages[2]
-            
+            if isTransformed == false {
+                miniBall.image = skillsImages[6]
+                miniBall.contentMode = .scaleAspectFill
+            } else {
+                miniBall.image = skillsImages[2]
+            }
             let destinationXPosition = vilainCharacterImageView.frame.origin.x - miniBall.bounds.width
             var currentXPosition = miniBallX
             
@@ -201,7 +207,7 @@ class ViewController: UIViewController {
         sender.isEnabled = false
         if isTransformed == true {
             playActionSound(soundFileName: "reverttransform")
-            characterImageView.image = transformImages[1]
+            characterImageView.image = transformImages[5]
             perform(#selector(changeImage), with: nil, afterDelay: 1.5)
             isTransformed = false
         }
@@ -221,6 +227,34 @@ class ViewController: UIViewController {
         if isTransformed == true {
             playActionSound(soundFileName: "somssj")
             characterImageView.image = transformImages[0]
+            let yellowView = UIView(frame: backGroundImageView.bounds)
+                yellowView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
+                yellowView.alpha = 0.0
+                backGroundImageView.addSubview(yellowView)
+                
+                // Criar uma animação de trepidação
+                let shakeAnimation = CABasicAnimation(keyPath: "position")
+                shakeAnimation.duration = 0.1
+                shakeAnimation.repeatCount = 10
+                shakeAnimation.autoreverses = true
+                shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
+                shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
+                backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
+                
+                // Animar o fade-in da view amarela
+                UIView.animate(withDuration: 0.5, animations: {
+                    yellowView.alpha = 1.0
+                }) { _ in
+                    // Executar a ação desejada após o fade-in
+                    
+                    // Aguardar 2 segundos (em vez de 3 segundos)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        // Animar o fade-out da view amarela
+                        UIView.animate(withDuration: 0.5, animations: {
+                            yellowView.alpha = 0.0
+                        }) { _ in
+                            // Remover a view amarela
+                            yellowView.removeFromSuperview()}}}
             perform(#selector(changeImageSuperMode), with: nil, afterDelay: 1.5)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -326,6 +360,7 @@ class ViewController: UIViewController {
     
     @IBAction func upButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
+        playActionSound(soundFileName: "rightwalk")
         if isTransformed == true {
             isPressed += 1
             characterImageView.image = superMoveImages[3]
@@ -346,6 +381,7 @@ class ViewController: UIViewController {
     
     @IBAction func downButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
+        playActionSound(soundFileName: "leftwalk")
         if isTransformed == true {
             isPressed += 1
             characterImageView.image = superMoveImages[4]
