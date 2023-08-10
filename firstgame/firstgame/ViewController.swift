@@ -153,8 +153,8 @@ class ViewController: UIViewController {
             Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { [self] timer in
                 currentXPosition += 20  // Ajuste a velocidade da miniBall conforme necessário
                 self.miniBall.frame.origin.x = currentXPosition
-                
                 if currentXPosition >= destinationXPosition {
+                    checkSkillsCollision()
                     timer.invalidate()
                     self.miniBall.image = nil
                     self.miniBall.frame.origin = CGPoint(x: 0, y: 0)
@@ -162,6 +162,7 @@ class ViewController: UIViewController {
                         self.vilainCharacterImageView.image = self.collisionsImages[self.currentIndex]
                         self.currentIndex += 1
                         vilainCharacterImageView.contentMode = .scaleToFill
+                        
                         perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
                     }
                     if currentIndex >= collisionsImages.count {
@@ -236,34 +237,7 @@ class ViewController: UIViewController {
         if isTransformed == true {
             playActionSound(soundFileName: "somssj")
             characterImageView.image = transformImages[0]
-            let yellowView = UIView(frame: backGroundImageView.bounds)
-                yellowView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
-                yellowView.alpha = 0.0
-                backGroundImageView.addSubview(yellowView)
-                
-                // Criar uma animação de trepidação
-                let shakeAnimation = CABasicAnimation(keyPath: "position")
-                shakeAnimation.duration = 0.1
-                shakeAnimation.repeatCount = 10
-                shakeAnimation.autoreverses = true
-                shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
-                shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
-                backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
-                
-                // Animar o fade-in da view amarela
-                UIView.animate(withDuration: 0.5, animations: {
-                    yellowView.alpha = 1.0
-                }) { _ in
-                    // Executar a ação desejada após o fade-in
-                    
-                    // Aguardar 2 segundos (em vez de 3 segundos)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        // Animar o fade-out da view amarela
-                        UIView.animate(withDuration: 0.5, animations: {
-                            yellowView.alpha = 0.0
-                        }) { _ in
-                            // Remover a view amarela
-                            yellowView.removeFromSuperview()}}}
+            yellowChange()
             perform(#selector(changeImageSuperMode), with: nil, afterDelay: 1.5)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -485,7 +459,7 @@ class ViewController: UIViewController {
                     vilainCharacterImageView.image = recoveryVilain[0]
                     vilainCharacterImageView.contentMode = .scaleAspectFill
                     characterLifeBar.setProgress(1.0, animated: true) // Definir barra de vida para 100%
-                    
+                    pinkChange()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         self.isVillainInRecovery = false
                         self.vilainCharacterImageView.image = self.villainImages[0]
@@ -513,13 +487,95 @@ class ViewController: UIViewController {
         let miniballHitbox = CGRect(x: miniBall.frame.origin.x, y: miniBall.frame.origin.y, width: miniBall.frame.width, height: miniBall.frame.height)
         let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
         if buuFrontHitbox.intersects(miniballHitbox) {
-            vilainCharacterImageView.image = collisionsImages[currentIndex]
-            currentIndex += 1
-            vilainCharacterImageView.contentMode = .scaleToFill
-            perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
-            if currentIndex >= collisionsImages.count {
-                currentIndex = 0
+            villainHealth -= 10
+            characterLifeBar.progress = Float(villainHealth) / 50.0
+            if villainHealth <= 0 {
+                villainHealth = 50
+                isVillainInRecovery = true
+                vilainCharacterImageView.image = recoveryVilain[0]
+                vilainCharacterImageView.contentMode = .scaleAspectFill
+                characterLifeBar.setProgress(1.0, animated: true) // Definir barra de vida para 100%
+                pinkChange()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.isVillainInRecovery = false
+                    self.vilainCharacterImageView.image = self.villainImages[0]
+                }
+            } else {
+                if currentIndex < collisionsImages.count {
+                    vilainCharacterImageView.image = collisionsImages[currentIndex]
+                    currentIndex += 1
+                    vilainCharacterImageView.contentMode = .scaleToFill
+                    perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
+                }
             }
+            
+            if currentIndex >= collisionsImages.count {
+                currentIndex = 0 // Reiniciar o índice
+            }
+        } else {
+            vilainCharacterImageView.image = villainImages[0] // Imagem padrão do vilão
+            currentIndex = 0
         }
     }
+    func pinkChange() {
+        let pinkView = UIView(frame: backGroundImageView.bounds)
+            pinkView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.5)
+            pinkView.alpha = 0.0
+            backGroundImageView.addSubview(pinkView)
+            
+            // Criar uma animação de trepidação
+            let shakeAnimation = CABasicAnimation(keyPath: "position")
+            shakeAnimation.duration = 0.1
+            shakeAnimation.repeatCount = 10
+            shakeAnimation.autoreverses = true
+            shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
+            shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
+            backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
+            
+            // Animar o fade-in da view amarela
+            UIView.animate(withDuration: 0.5, animations: {
+                pinkView.alpha = 1.0
+            }) { _ in
+                // Executar a ação desejada após o fade-in
+                
+                // Aguardar 2 segundos (em vez de 3 segundos)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    // Animar o fade-out da view amarela
+                    UIView.animate(withDuration: 0.5, animations: {
+                        pinkView.alpha = 0.0
+                    }) { _ in
+                        // Remover a view amarela
+                        pinkView.removeFromSuperview()}}}
+    }
+    func yellowChange() {
+        let yellowView = UIView(frame: backGroundImageView.bounds)
+            yellowView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
+            yellowView.alpha = 0.0
+            backGroundImageView.addSubview(yellowView)
+            
+            // Criar uma animação de trepidação
+            let shakeAnimation = CABasicAnimation(keyPath: "position")
+            shakeAnimation.duration = 0.1
+            shakeAnimation.repeatCount = 10
+            shakeAnimation.autoreverses = true
+            shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
+            shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
+            backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
+            
+            // Animar o fade-in da view amarela
+            UIView.animate(withDuration: 0.5, animations: {
+                yellowView.alpha = 1.0
+            }) { _ in
+                // Executar a ação desejada após o fade-in
+                
+                // Aguardar 2 segundos (em vez de 3 segundos)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    // Animar o fade-out da view amarela
+                    UIView.animate(withDuration: 0.5, animations: {
+                        yellowView.alpha = 0.0
+                    }) { _ in
+                        // Remover a view amarela
+                        yellowView.removeFromSuperview()}}}
+    }
 }
+
