@@ -133,6 +133,19 @@
                                 <color key="progressTintColor" systemColor="systemGreenColor"/>
                                 <color key="trackTintColor" red="0.5568627451" green="0.16078431369999999" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TQ-tw-QcZ">
+                                <rect key="frame" x="94" y="565" width="40" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="dragonfirstbutton"/>
+                                <connections>
+                                    <action selector="dragonFirstPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bNV-mm-NgB"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wZD-aK-DTg">
+                                <rect key="frame" x="94" y="758" width="170" height="73"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -141,6 +154,7 @@
                         <outlet property="backGroundImageView" destination="Z7I-4b-vGZ" id="bnt-hb-6kg"/>
                         <outlet property="characterImageView" destination="0XL-zT-wB1" id="WUH-2d-unL"/>
                         <outlet property="characterLifeBar" destination="12o-a5-3K3" id="hrT-JQ-EFI"/>
+                        <outlet property="dragonFirst" destination="wZD-aK-DTg" id="1Ip-zY-yzd"/>
                         <outlet property="miniBall" destination="mbA-6G-wr0" id="hhM-J6-B1v"/>
                         <outlet property="vilainCharacterImageView" destination="HTP-cY-m3B" id="Mcq-2J-UZ6"/>
                     </connections>
@@ -153,6 +167,7 @@
     <resources>
         <image name="barradehp" width="2083" height="1167"/>
         <image name="dash2" width="40" height="57"/>
+        <image name="dragonfirstbutton" width="40" height="57"/>
         <image name="hand" width="40" height="57"/>
         <image name="normal" width="40" height="57"/>
         <image name="punch" width="40" height="57"/>
