@@ -24,6 +24,8 @@
 		599516B02A7C923300E8F6FD /* leftwalk.wav in Resources */ = {isa = PBXBuildFile; fileRef = 599516AE2A7C923300E8F6FD /* leftwalk.wav */; };
 		59A22CED2A7B19DF00F72061 /* backgroundmusic1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 59A22CEC2A7B19DF00F72061 /* backgroundmusic1.mp3 */; };
 		59A3E9352A84848D00A8D506 /* afterbackgroundchange.wav in Resources */ = {isa = PBXBuildFile; fileRef = 59A3E9342A84848D00A8D506 /* afterbackgroundchange.wav */; };
+		59A3E9372A8512A700A8D506 /* ssj3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 59A3E9362A8512A700A8D506 /* ssj3.wav */; };
+		59A3E9392A8512BF00A8D506 /* dragonfirstsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 59A3E9382A8512BF00A8D506 /* dragonfirstsound.wav */; };
 		59B97DE22A7B33BD0008A33B /* somssj.wav in Resources */ = {isa = PBXBuildFile; fileRef = 59B97DE12A7B33BD0008A33B /* somssj.wav */; };
 		59B97DE42A7B33C40008A33B /* reverttransform.wav in Resources */ = {isa = PBXBuildFile; fileRef = 59B97DE32A7B33C40008A33B /* reverttransform.wav */; };
 /* End PBXBuildFile section */
@@ -48,6 +50,8 @@
 		599516AE2A7C923300E8F6FD /* leftwalk.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = leftwalk.wav; sourceTree = "<group>"; };
 		59A22CEC2A7B19DF00F72061 /* backgroundmusic1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundmusic1.mp3; sourceTree = "<group>"; };
 		59A3E9342A84848D00A8D506 /* afterbackgroundchange.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afterbackgroundchange.wav; sourceTree = "<group>"; };
+		59A3E9362A8512A700A8D506 /* ssj3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ssj3.wav; sourceTree = "<group>"; };
+		59A3E9382A8512BF00A8D506 /* dragonfirstsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dragonfirstsound.wav; sourceTree = "<group>"; };
 		59B97DE12A7B33BD0008A33B /* somssj.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = somssj.wav; sourceTree = "<group>"; };
 		59B97DE32A7B33C40008A33B /* reverttransform.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = reverttransform.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +108,8 @@
 				599516A92A7C906600E8F6FD /* strike.wav */,
 				599516AB2A7C920B00E8F6FD /* superstrike.wav */,
 				599516AE2A7C923300E8F6FD /* leftwalk.wav */,
+				59A3E9362A8512A700A8D506 /* ssj3.wav */,
+				59A3E9382A8512BF00A8D506 /* dragonfirstsound.wav */,
 				599516AD2A7C923300E8F6FD /* rightwalk.wav */,
 				5979A0672A7DE8B2001D1250 /* teleport.wav */,
 				5979A0692A7DE8BB001D1250 /* grandebola.wav */,
@@ -174,11 +180,13 @@
 			files = (
 				59B97DE22A7B33BD0008A33B /* somssj.wav in Resources */,
 				5979A0682A7DE8B2001D1250 /* teleport.wav in Resources */,
+				59A3E9392A8512BF00A8D506 /* dragonfirstsound.wav in Resources */,
 				59B97DE42A7B33C40008A33B /* reverttransform.wav in Resources */,
 				599516B02A7C923300E8F6FD /* leftwalk.wav in Resources */,
 				599516AF2A7C923300E8F6FD /* rightwalk.wav in Resources */,
 				5979A06C2A7DE8C3001D1250 /* gokuup.wav in Resources */,
 				5979A06E2A7DE8CB001D1250 /* bola.wav in Resources */,
+				59A3E9372A8512A700A8D506 /* ssj3.wav in Resources */,
 				59A3E9352A84848D00A8D506 /* afterbackgroundchange.wav in Resources */,
 				5979A06A2A7DE8BB001D1250 /* grandebola.wav in Resources */,
 				597B19FD2A785A49002EF4C7 /* LaunchScreen.storyboard in Resources */,
