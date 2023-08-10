@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         let backGroundImage = UIImage(named: "backgrounddbz")
         backGroundImageView.image = backGroundImage
         backGroundImageView.contentMode = .scaleAspectFill
@@ -62,6 +63,16 @@ class ViewController: UIViewController {
         
         playBackgroundMusic()
         
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+                UIDevice.current.setValue(value, forKey: "orientation")
+            }
+
+            override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+                return .landscape
+            }
+
+    override var shouldAutorotate: Bool {
+        return true
     }
     
     @IBAction func dragonFirstPressed(_ sender: UIButton) {
@@ -97,7 +108,7 @@ class ViewController: UIViewController {
             var currentXPosition = dragonFirstX
             
             Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { [self] timer in
-                currentXPosition += 5  // Ajuste a velocidade da miniBall conforme necessário
+                currentXPosition += 25  // Ajuste a velocidade da miniBall conforme necessário
                 self.dragonFirst.frame.origin.x = currentXPosition
                 if currentXPosition >= destinationXPosition {
                     checkDragonFirstCollision()
@@ -129,14 +140,14 @@ class ViewController: UIViewController {
         if isPressed == 1 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX += 200
+            positionX += 590
         }
     }
     func DashBackMove() {
         if isPressed == 1 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX -= 200
+            positionX -= 590
         }
     }
     
@@ -238,7 +249,7 @@ class ViewController: UIViewController {
             var currentXPosition = miniBallX
             
             Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { [self] timer in
-                currentXPosition += 20  // Ajuste a velocidade da miniBall conforme necessário
+                currentXPosition += 25  // Ajuste a velocidade da miniBall conforme necessário
                 self.miniBall.frame.origin.x = currentXPosition
                 if currentXPosition >= destinationXPosition {
                     checkSkillsCollision()
@@ -390,12 +401,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX += 35
+            positionX += 85
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX += 70
+            positionX += 122
         }
     }
     
@@ -403,12 +414,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX -= 35
+            positionX -= 85
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX -= 70
+            positionX -= 122
         }
     }
     
@@ -416,12 +427,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY -= 35
+            positionY -= 85
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY -= 70
+            positionY -= 122
         }
     }
     
@@ -429,12 +440,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY += 35
+            positionY += 85
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY += 70
+            positionY += 122
         }
     }
     
