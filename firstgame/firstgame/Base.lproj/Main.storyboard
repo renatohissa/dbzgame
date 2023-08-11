@@ -150,11 +150,34 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" progressImage="barradehp" translatesAutoresizingMaskIntoConstraints="NO" id="PN3-fN-4KM">
-                                <rect key="frame" x="701" y="219" width="86" height="4"/>
+                                <rect key="frame" x="701" y="224" width="86" height="4"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="progressTintColor" systemColor="systemGreenColor"/>
                                 <color key="trackTintColor" red="0.5568627451" green="0.16078431369999999" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </progressView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" progressImage="barradehp" translatesAutoresizingMaskIntoConstraints="NO" id="VeI-Xm-xzB">
+                                <rect key="frame" x="36" y="284" width="72" height="4"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="progressTintColor" systemColor="systemGreenColor"/>
+                                <color key="trackTintColor" red="0.5568627451" green="0.16078431369999999" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Renato" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wky-dy-unw">
+                                <rect key="frame" x="45" y="259" width="54" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <color key="highlightedColor" systemColor="labelColor"/>
+                                <color key="shadowColor" systemColor="opaqueSeparatorColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Buu(Jonas)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNK-8z-NXN">
+                                <rect key="frame" x="707" y="202" width="88" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemPurpleColor"/>
+                                <color key="highlightedColor" systemColor="labelColor"/>
+                                <color key="shadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <size key="shadowOffset" width="1" height="-1"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -163,9 +186,12 @@
                         <outlet property="backGroundImageView" destination="Z7I-4b-vGZ" id="bnt-hb-6kg"/>
                         <outlet property="characterImageView" destination="zlk-md-tDN" id="KJH-XY-PGQ"/>
                         <outlet property="characterLifeBar" destination="PN3-fN-4KM" id="0a7-fa-Poj"/>
+                        <outlet property="characterNameLabel" destination="Wky-dy-unw" id="ctX-KA-PRE"/>
                         <outlet property="dragonFirst" destination="dTM-E5-dRq" id="jB6-dG-oiJ"/>
+                        <outlet property="gokuLifeBar" destination="VeI-Xm-xzB" id="d1y-7d-qhy"/>
                         <outlet property="miniBall" destination="coG-tf-5aJ" id="g5Y-JL-ODS"/>
                         <outlet property="vilainCharacterImageView" destination="iDC-MN-q1t" id="BBr-hX-PJI"/>
+                        <outlet property="vilainNameLabel" destination="pNK-8z-NXN" id="Aom-6M-lUU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -187,11 +213,20 @@
         <image name="ssj3button" width="40" height="57"/>
         <image name="super" width="40" height="57"/>
         <image name="teleport" width="40" height="57"/>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

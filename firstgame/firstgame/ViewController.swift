@@ -1,4 +1,3 @@
-
 import UIKit
 import AVFoundation
 
@@ -9,7 +8,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var miniBall: UIImageView!
     @IBOutlet weak var vilainCharacterImageView: UIImageView!
     @IBOutlet weak var characterLifeBar: UIProgressView!
+    @IBOutlet weak var gokuLifeBar: UIProgressView!
     @IBOutlet weak var dragonFirst: UIImageView!
+    @IBOutlet weak var characterNameLabel: UILabel!
+    @IBOutlet weak var vilainNameLabel: UILabel!
     
     var backgroundAudioPlayer: AVAudioPlayer?
     var transformationAudioPlayer: AVAudioPlayer?
@@ -31,15 +33,15 @@ class ViewController: UIViewController {
     var positionY: CGFloat = 0.0
     var isTransformed = false
     var isButtonActionInProgress = false
+    var isVillainInRecovery: Bool = false
+    var isMode3 = false
     var currentIndex = 0
     var isPressed = 0
     var villainHealth: Int = 50
-    var isVillainInRecovery: Bool = false
-    var isMode3 = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         let backGroundImage = UIImage(named: "backgrounddbz")
         backGroundImageView.image = backGroundImage
@@ -55,22 +57,21 @@ class ViewController: UIViewController {
         positionX = vilainCharacterImageView.frame.origin.x
         positionY = vilainCharacterImageView.frame.origin.y
         
-        
         characterImageView.layer.zPosition = vilainCharacterImageView.layer.zPosition + 1
-        
         characterLifeBar.progress = 1.0
+        gokuLifeBar.progress = 1.0
+        gokuLifeBar.progressTintColor = .green
         characterLifeBar.progressTintColor = .green
-        
         playBackgroundMusic()
         
         let value = UIInterfaceOrientation.landscapeRight.rawValue
-                UIDevice.current.setValue(value, forKey: "orientation")
-            }
-
-            override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-                return .landscape
-            }
-
+        UIDevice.current.setValue(value, forKey: "orientation")
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }
@@ -93,7 +94,6 @@ class ViewController: UIViewController {
             perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
-        
         if isPressed >= 1 {
             let dragonFirstX = characterImageView.frame.maxX + 10
             let dragonFirstY = characterImageView.frame.midY - dragonFirst.bounds.height / 2
@@ -111,8 +111,8 @@ class ViewController: UIViewController {
                 currentXPosition += 25  // Ajuste a velocidade da miniBall conforme necessário
                 self.dragonFirst.frame.origin.x = currentXPosition
                 if currentXPosition >= destinationXPosition {
-                    checkDragonFirstCollision()
-                    orangeChange()
+                    checkCollisions()
+                    animateColorChange(color: UIColor.orange)
                     timer.invalidate()
                     self.dragonFirst.image = nil
                     self.dragonFirst.frame.origin = CGPoint(x: 0, y: 0)
@@ -120,7 +120,6 @@ class ViewController: UIViewController {
                         self.vilainCharacterImageView.image = self.collisionsImages[self.currentIndex]
                         self.currentIndex += 1
                         vilainCharacterImageView.contentMode = .scaleToFill
-                        
                         perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
                     }
                     if currentIndex >= collisionsImages.count {
@@ -134,7 +133,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
     
     func DashFrontMove() {
         if isPressed == 1 {
@@ -222,7 +220,6 @@ class ViewController: UIViewController {
             characterImageView.image = skillsImages[5]
             perform(#selector(changeImage), with: nil, afterDelay: 0.6)
             isPressed += 1
-            
         }
         if isTransformed == true {
             characterImageView.image = skillsImages[7]
@@ -234,7 +231,6 @@ class ViewController: UIViewController {
             perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
-        
         if isPressed >= 1 {
             let miniBallX = characterImageView.frame.maxX + 10
             let miniBallY = characterImageView.frame.midY - miniBall.bounds.height / 2
@@ -252,7 +248,7 @@ class ViewController: UIViewController {
                 currentXPosition += 25  // Ajuste a velocidade da miniBall conforme necessário
                 self.miniBall.frame.origin.x = currentXPosition
                 if currentXPosition >= destinationXPosition {
-                    checkSkillsCollision()
+                    checkCollisions()
                     timer.invalidate()
                     self.miniBall.image = nil
                     self.miniBall.frame.origin = CGPoint(x: 0, y: 0)
@@ -260,7 +256,6 @@ class ViewController: UIViewController {
                         self.vilainCharacterImageView.image = self.collisionsImages[self.currentIndex]
                         self.currentIndex += 1
                         vilainCharacterImageView.contentMode = .scaleToFill
-                        
                         perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
                     }
                     if currentIndex >= collisionsImages.count {
@@ -346,7 +341,7 @@ class ViewController: UIViewController {
         if isTransformed == true {
             playActionSound(soundFileName: "somssj")
             characterImageView.image = transformImages[0]
-            yellowChange()
+            animateColorChange(color: UIColor.yellow)
             perform(#selector(changeImageSuperMode), with: nil, afterDelay: 1.5)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -354,7 +349,6 @@ class ViewController: UIViewController {
             sender.isEnabled = true
         }
     }
-    
     
     @IBAction func ssj3TranformButton(_ sender: UIButton) {
         if isButtonActionInProgress {
@@ -366,12 +360,10 @@ class ViewController: UIViewController {
             isTransformed = false
             isButtonActionInProgress = true
             sender.isEnabled = false
-            currentIndex = 0 // Reinicia o índice para a primeira imagem
+            currentIndex = 0
             
             if isMode3 == true {
-                // Inicia a primeira transformação
                 performTransformation()
-                
             }
             isButtonActionInProgress = false
             sender.isEnabled = true
@@ -388,10 +380,9 @@ class ViewController: UIViewController {
         if currentIndex < super3TranformImages.count {
             characterImageView.image = super3TranformImages[currentIndex]
             currentIndex += 1
-            goldenChange()
+            animateColorChange(color: UIColor.systemYellow)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.performTransformation()
-                // Chama a próxima transformação após o atraso
             }
         }
         perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 2.5)
@@ -507,7 +498,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
     @IBAction func upButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
         playActionSound(soundFileName: "rightwalk")
@@ -594,7 +584,12 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.characterImageView.frame.origin.x = self.positionX
             self.characterImageView.frame.origin.y = self.positionY
+            self.characterNameLabel.center = CGPoint(x: self.characterImageView.center.x, y: self.characterImageView.frame.minY - 20)
+            let hpBarX = self.characterImageView.frame.origin.x + (self.characterImageView.frame.width - self.gokuLifeBar.frame.width) / 2
+                    let hpBarY = self.characterImageView.frame.minY - self.gokuLifeBar.frame.height
+                    self.gokuLifeBar.frame.origin = CGPoint(x: hpBarX, y: hpBarY)
         }
+        vilainNameLabel.center = CGPoint(x: vilainCharacterImageView.center.x, y: vilainCharacterImageView.frame.minY - 20)
     }
     
     func playBackgroundMusic() {
@@ -633,223 +628,79 @@ class ViewController: UIViewController {
             return
         }
         
-        let characterHitbox = CGRect(x: characterImageView.frame.origin.x, y: characterImageView.frame.origin.y, width: characterImageView.frame.width, height: characterImageView.frame.height)
+        let collisionHitboxes = [
+            CGRect(x: characterImageView.frame.origin.x, y: characterImageView.frame.origin.y, width: characterImageView.frame.width, height: characterImageView.frame.height),
+            CGRect(x: miniBall.frame.origin.x, y: miniBall.frame.origin.y, width: miniBall.frame.width, height: miniBall.frame.height),
+            CGRect(x: dragonFirst.frame.origin.x, y: dragonFirst.frame.origin.y, width: dragonFirst.frame.width, height: dragonFirst.frame.height)
+        ]
+        
         let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
         
-        if characterHitbox.intersects(buuFrontHitbox) {
-            villainHealth -= 5
-            characterLifeBar.progress = Float(villainHealth) / 50.0
-            if villainHealth <= 0 {
-                villainHealth = 50
-                isVillainInRecovery = true
-                vilainCharacterImageView.image = recoveryVilain[0]
-                vilainCharacterImageView.contentMode = .scaleAspectFill
-                characterLifeBar.setProgress(1.0, animated: true)
-                pinkChange()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.isVillainInRecovery = false
-                    self.vilainCharacterImageView.image = self.villainImages[0]
-                    self.playActionSound(soundFileName: "afterbackgroundchange")
+        for collisionHitbox in collisionHitboxes {
+            if buuFrontHitbox.intersects(collisionHitbox) {
+                villainHealth -= 10
+                characterLifeBar.progress = Float(villainHealth) / 50.0
+                if villainHealth <= 0 {
+                    villainHealth = 50
+                    isVillainInRecovery = true
+                    vilainCharacterImageView.image = recoveryVilain[0]
+                    vilainCharacterImageView.contentMode = .scaleAspectFill
+                    characterLifeBar.setProgress(1.0, animated: true)
+                    animateColorChange(color: UIColor.systemPink)
+                    playActionSound(soundFileName: "afterbackgroundchange")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.isVillainInRecovery = false
+                        self.vilainCharacterImageView.image = self.villainImages[0]
+                    }
+                } else {
+                    if currentIndex < collisionsImages.count {
+                        vilainCharacterImageView.image = collisionsImages[currentIndex]
+                        currentIndex += 1
+                        vilainCharacterImageView.contentMode = .scaleToFill
+                        perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
+                    }
                 }
-            } else {
-                if currentIndex < collisionsImages.count {
-                    vilainCharacterImageView.image = collisionsImages[currentIndex]
-                    currentIndex += 1
-                    vilainCharacterImageView.contentMode = .scaleToFill
-                    perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
+                if currentIndex >= collisionsImages.count {
+                    currentIndex = 0
                 }
+                return
             }
-            
-            if currentIndex >= collisionsImages.count {
-                currentIndex = 0 // Reiniciar o índice
-            }
-        } else {
-            vilainCharacterImageView.image = villainImages[0]
-            currentIndex = 0
         }
-    }
-    
-    func checkSkillsCollision() {
         
-        let miniballHitbox = CGRect(x: miniBall.frame.origin.x, y: miniBall.frame.origin.y, width: miniBall.frame.width, height: miniBall.frame.height)
-        let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
-        if buuFrontHitbox.intersects(miniballHitbox) {
-            villainHealth -= 10
-            characterLifeBar.progress = Float(villainHealth) / 50.0
-            if villainHealth <= 0 {
-                villainHealth = 50
-                isVillainInRecovery = true
-                vilainCharacterImageView.image = recoveryVilain[0]
-                vilainCharacterImageView.contentMode = .scaleAspectFill
-                characterLifeBar.setProgress(1.0, animated: true)
-                pinkChange()
-                playActionSound(soundFileName: "afterbackgroundchange")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.isVillainInRecovery = false
-                    self.vilainCharacterImageView.image = self.villainImages[0]
-                }
-            } else {
-                if currentIndex < collisionsImages.count {
-                    vilainCharacterImageView.image = collisionsImages[currentIndex]
-                    currentIndex += 1
-                    vilainCharacterImageView.contentMode = .scaleToFill
-                    perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
-                }
-            }
-            
-            if currentIndex >= collisionsImages.count {
-                currentIndex = 0
-            }
-        } else {
-            vilainCharacterImageView.image = villainImages[0]
-            currentIndex = 0
-        }
+        vilainCharacterImageView.image = villainImages[0]
+        currentIndex = 0
     }
+
     
-    func checkDragonFirstCollision() {
-        
-        let dragonFirstHitbox = CGRect(x: dragonFirst.frame.origin.x, y: dragonFirst.frame.origin.y, width: dragonFirst.frame.width, height: dragonFirst.frame.height)
-        let buuFrontHitbox = CGRect(x: vilainCharacterImageView.frame.origin.x, y: vilainCharacterImageView.frame.origin.y, width: vilainCharacterImageView.frame.width, height: vilainCharacterImageView.frame.height)
-        if buuFrontHitbox.intersects(dragonFirstHitbox) {
-            villainHealth -= 10
-            characterLifeBar.progress = Float(villainHealth) / 50.0
-            if villainHealth <= 0 {
-                villainHealth = 50
-                isVillainInRecovery = true
-                vilainCharacterImageView.image = recoveryVilain[0]
-                vilainCharacterImageView.contentMode = .scaleAspectFill
-                characterLifeBar.setProgress(1.0, animated: true) // Definir barra de vida para 100%
-                pinkChange()
-                playActionSound(soundFileName: "afterbackgroundchange")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.isVillainInRecovery = false
-                    self.vilainCharacterImageView.image = self.villainImages[0]
-                }
-            } else {
-                if currentIndex < collisionsImages.count {
-                    vilainCharacterImageView.image = collisionsImages[currentIndex]
-                    currentIndex += 1
-                    vilainCharacterImageView.contentMode = .scaleToFill
-                    perform(#selector(changeColisionVilainImage), with: nil, afterDelay: 0.3)
-                }
-            }
-            
-            if currentIndex >= collisionsImages.count {
-                currentIndex = 0 // Reiniciar o índice
-            }
-        } else {
-            vilainCharacterImageView.image = villainImages[0] // Imagem padrão do vilão
-            currentIndex = 0
-        }
-    }
-    
-    func pinkChange() {
-        
-        let pinkView = UIView(frame: backGroundImageView.bounds)
-        pinkView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.5)
-        pinkView.alpha = 0.0
-        backGroundImageView.addSubview(pinkView)
+    func animateColorChange(color: UIColor) {
+        let colorView = UIView(frame: backGroundImageView.bounds)
+        colorView.backgroundColor = color.withAlphaComponent(0.5)
+        colorView.alpha = 0.0
+        backGroundImageView.addSubview(colorView)
         
         let shakeAnimation = CABasicAnimation(keyPath: "position")
         shakeAnimation.duration = 0.1
         shakeAnimation.repeatCount = 10
         shakeAnimation.autoreverses = true
-        shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
-        shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
+        if isMode3 == true {
+            shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 25, y: backGroundImageView.center.y))
+            shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 25, y: backGroundImageView.center.y))
+        } else {
+            shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
+            shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
+        }
         backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
         
         UIView.animate(withDuration: 0.5, animations: {
-            pinkView.alpha = 1.0
+            colorView.alpha = 1.0
         }) { _ in
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                
-                UIView.animate(withDuration: 0.5, animations: {
-                    pinkView.alpha = 0.0
-                }) { _ in
-                    
-                    pinkView.removeFromSuperview()}}}
-    }
-    
-    func yellowChange() {
-        
-        let yellowView = UIView(frame: backGroundImageView.bounds)
-        yellowView.backgroundColor = UIColor.yellow.withAlphaComponent(0.6)
-        yellowView.alpha = 0.0
-        backGroundImageView.addSubview(yellowView)
-        
-        let shakeAnimation = CABasicAnimation(keyPath: "position")
-        shakeAnimation.duration = 0.1
-        shakeAnimation.repeatCount = 10
-        shakeAnimation.autoreverses = true
-        shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 10, y: backGroundImageView.center.y))
-        shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 10, y: backGroundImageView.center.y))
-        backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            yellowView.alpha = 1.0
-        }) { _ in
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                
                 UIView.animate(withDuration: 0.5, animations: {
-                    yellowView.alpha = 0.0
+                    colorView.alpha = 0.0
                 }) { _ in
-                    
-                    yellowView.removeFromSuperview()}}}
-    }
-    
-    func orangeChange() {
-        
-        let orangeView = UIView(frame: backGroundImageView.bounds)
-        orangeView.backgroundColor = UIColor.orange.withAlphaComponent(0.3)
-        orangeView.alpha = 0.0
-        backGroundImageView.addSubview(orangeView)
-        
-        let shakeAnimation = CABasicAnimation(keyPath: "position")
-        shakeAnimation.duration = 0.1
-        shakeAnimation.repeatCount = 5
-        shakeAnimation.autoreverses = true
-        shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 5, y: backGroundImageView.center.y))
-        shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 5, y: backGroundImageView.center.y))
-        backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            orangeView.alpha = 1.0
-        }) { _ in
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UIView.animate(withDuration: 0.5, animations: {
-                    orangeView.alpha = 0.0
-                }) { _ in
-                    orangeView.removeFromSuperview()}}}
-    }
-    func goldenChange() {
-        
-        let yellowView = UIView(frame: backGroundImageView.bounds)
-        yellowView.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.6)
-        yellowView.alpha = 0.0
-        backGroundImageView.addSubview(yellowView)
-        
-        let shakeAnimation = CABasicAnimation(keyPath: "position")
-        shakeAnimation.duration = 0.1
-        shakeAnimation.repeatCount = 10
-        shakeAnimation.autoreverses = true
-        shakeAnimation.fromValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x - 20, y: backGroundImageView.center.y))
-        shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: backGroundImageView.center.x + 20, y: backGroundImageView.center.y))
-        backGroundImageView.layer.add(shakeAnimation, forKey: "shake")
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            yellowView.alpha = 1.0
-        }) { _ in
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                
-                UIView.animate(withDuration: 0.5, animations: {
-                    yellowView.alpha = 0.0
-                }) { _ in
-                    
-                    yellowView.removeFromSuperview()}}}
+                    colorView.removeFromSuperview()
+                }
+            }
+        }
     }
 }
