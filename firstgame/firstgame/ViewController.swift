@@ -31,13 +31,14 @@ class ViewController: UIViewController {
     
     var positionX: CGFloat = 0.0
     var positionY: CGFloat = 0.0
+    var currentIndex = 0
+    var isPressed = 0
+    var villainHealth: Int = 80
     var isTransformed = false
     var isButtonActionInProgress = false
     var isVillainInRecovery: Bool = false
     var isMode3 = false
-    var currentIndex = 0
-    var isPressed = 0
-    var villainHealth: Int = 80
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +62,7 @@ class ViewController: UIViewController {
         gokuLifeBar.progress = 1.0
         gokuLifeBar.progressTintColor = .green
         characterLifeBar.progressTintColor = .green
+        
         playBackgroundMusic()
         
         let value = UIInterfaceOrientation.landscapeRight.rawValue
@@ -75,26 +77,28 @@ class ViewController: UIViewController {
         return true
     }
     
-    
-    
     @IBAction func dragonFirstPressed(_ sender: UIButton) {
         sender.isEnabled = false
         playActionSound(soundFileName: "grandebola")
+        
         if isTransformed == false && isMode3 == false {
             characterImageView.image = skillsImages[5]
             perform(#selector(changeImage), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isTransformed == true {
             characterImageView.image = skillsImages[7]
             perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isMode3 == true {
             characterImageView.image = skillsImages[10]
             perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isPressed >= 1 {
             let dragonFirstX = characterImageView.frame.maxX + 10
             let dragonFirstY = characterImageView.frame.midY - dragonFirst.bounds.height / 2
@@ -152,6 +156,7 @@ class ViewController: UIViewController {
     
     @IBAction func teleportButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
+        
         if isTransformed == true {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -160,6 +165,7 @@ class ViewController: UIViewController {
             DashFrontMove()
             moveCharacter()
         }
+        
         if isMode3 == true {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -168,6 +174,7 @@ class ViewController: UIViewController {
             DashFrontMove()
             moveCharacter()
         }
+        
         if isTransformed == false && isMode3 == false {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -184,6 +191,7 @@ class ViewController: UIViewController {
     
     @IBAction func dashTeleportPressed(_ sender: UIButton) {
         sender.isEnabled = false
+        
         if isTransformed == true {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -192,6 +200,7 @@ class ViewController: UIViewController {
             DashBackMove()
             moveCharacter()
         }
+        
         if isMode3 == true {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -200,6 +209,7 @@ class ViewController: UIViewController {
             DashBackMove()
             moveCharacter()
         }
+        
         if isTransformed == false && isMode3 == false {
             isPressed += 1
             playActionSound(soundFileName: "teleport")
@@ -217,21 +227,25 @@ class ViewController: UIViewController {
     @IBAction func powerButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
         playActionSound(soundFileName: "grandebola")
+        
         if isTransformed == false && isMode3 == false {
             characterImageView.image = skillsImages[5]
             perform(#selector(changeImage), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isTransformed == true {
             characterImageView.image = skillsImages[7]
             perform(#selector(changeImageSuperMode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isMode3 == true {
             characterImageView.image = skillsImages[10]
             perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 0.6)
             isPressed += 1
         }
+        
         if isPressed >= 1 {
             let miniBallX = characterImageView.frame.maxX + 10
             let miniBallY = characterImageView.frame.midY - miniBall.bounds.height / 2
@@ -274,23 +288,25 @@ class ViewController: UIViewController {
     @IBAction func punchButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
         if isTransformed == false && isMode3 == false {
+
             playActionSound(soundFileName: "strike")
             characterImageView.image = punchImages[currentIndex]
             currentIndex += 1
             perform(#selector(changeImage), with: nil, afterDelay: 0.3)
-        }
-        if currentIndex >= punchImages.count {
-            currentIndex = 0
-        }
-        if isMode3 == true {
+            if currentIndex >= punchImages.count {
+                currentIndex = 0
+            }
+        } else if isMode3 == true {
+            
+            if currentIndex >= superPunchSsj3Images.count {
+                currentIndex = 0
+            }
             playActionSound(soundFileName: "strike")
             characterImageView.image = superPunchSsj3Images[currentIndex]
             currentIndex += 1
             perform(#selector(changeImageSsj3Mode), with: nil, afterDelay: 0.3)
         }
-        if currentIndex >= superPunchSsj3Images.count {
-            currentIndex = 0
-        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             sender.isEnabled = true
         }
@@ -299,6 +315,7 @@ class ViewController: UIViewController {
     
     @IBAction func punchButtonPressedInSuperMode(_ sender: UIButton) {
         if isTransformed == true {
+            
             playActionSound(soundFileName: "strike")
             characterImageView.image = superPunchImages[currentIndex]
             currentIndex += 1
@@ -393,12 +410,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX += 85
+            positionX += 65
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX += 122
+            positionX += 105
         }
     }
     
@@ -406,12 +423,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX -= 85
+            positionX -= 65
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionX -= 122
+            positionX -= 105
         }
     }
     
@@ -419,12 +436,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY -= 85
+            positionY -= 65
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY -= 122
+            positionY -= 65
         }
     }
     
@@ -432,12 +449,12 @@ class ViewController: UIViewController {
         if isPressed == 0 {
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY += 85
+            positionY += 65
         } else {
             isPressed -= 1
             positionX = characterImageView.frame.origin.x
             positionY = characterImageView.frame.origin.y
-            positionY += 122
+            positionY += 65
         }
     }
     
@@ -681,7 +698,7 @@ class ViewController: UIViewController {
         }
         
         vilainCharacterImageView.image = villainImages[0]
-        currentIndex = 0
+
     }
     
     func animateColorChange(color: UIColor) {
