@@ -9,6 +9,8 @@ O resultado é o projeto deste repositório e segue abaixo algumas imagens/print
 
 ![Simulator Screen Shot - iPhone 14 Pro - 2023-09-06 at 20 59 47](https://github.com/renatohissa/dbzgame/assets/114428972/908b357a-31e6-4bcc-a3e7-06eaf72719e7)
 
+![Simulator Screen Shot - iPhone 14 Pro - 2023-08-11 at 21 27 37](https://github.com/renatohissa/dbzgame/assets/114428972/6846a90e-6783-479f-8e66-3ad302bda6f5)
+
 Neste jogo pude ter contato com storyboard, criação de botões, labels, animações, além de pratica de execução das lógicas pensadas, com o uso de condicionais e hitboxs. 
 Também explorei um pouco dos recursos básicos como variáveis, constantes, arrays e tipos em geral.
 Entendi o funcionamento da viewController e seu lifeCycle.
